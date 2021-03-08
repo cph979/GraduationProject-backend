@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.cph.vhr.mapper.AppraiseMapper" >
+  <resultMap id="BaseResultMap" type="org.cph.vhr.model.Appraise" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="eid" property="eid" jdbcType="INTEGER" />
+    <result column="appDate" property="appDate" jdbcType="DATE" />
+    <result column="appResult" property="appResult" jdbcType="VARCHAR" />
+    <result column="appContent" property="appContent" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, eid, appDate, appResult, appContent
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from appraise
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from appraise
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.cph.vhr.model.Appraise" >
+    insert into appraise (id, eid, appDate, 
+      appResult, appContent)
+    values (#{id,jdbcType=INTEGER}, #{eid,jdbcType=INTEGER}, #{appDate,jdbcType=DATE}, 
+      #{appResult,jdbcType=VARCHAR}, #{appContent,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="org.cph.vhr.model.Appraise" >
+    insert into appraise
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="eid != null" >
+        eid,
+      </if>
+      <if test="appDate != null" >
+        appDate,
+      </if>
+      <if test="appResult != null" >
+        appResult,
+      </if>
+      <if test="appContent != null" >
+        appContent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="eid != null" >
+        #{eid,jdbcType=INTEGER},
+      </if>
+      <if test="appDate != null" >
+        #{appDate,jdbcType=DATE},
+      </if>
+      <if test="appResult != null" >
+        #{appResult,jdbcType=VARCHAR},
+      </if>
+      <if test="appContent != null" >
+        #{appContent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.cph.vhr.model.Appraise" >
+    update appraise
+    <set >
+      <if test="eid != null" >
+        eid = #{eid,jdbcType=INTEGER},
+      </if>
+      <if test="appDate != null" >
+        appDate = #{appDate,jdbcType=DATE},
+      </if>
+      <if test="appResult != null" >
+        appResult = #{appResult,jdbcType=VARCHAR},
+      </if>
+      <if test="appContent != null" >
+        appContent = #{appContent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.cph.vhr.model.Appraise" >
+    update appraise
+    set eid = #{eid,jdbcType=INTEGER},
+      appDate = #{appDate,jdbcType=DATE},
+      appResult = #{appResult,jdbcType=VARCHAR},
+      appContent = #{appContent,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
