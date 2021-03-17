@@ -1,5 +1,6 @@
 package org.cph.vhr.web.emp;
 
+import org.cph.vhr.annotations.Encrypt;
 import org.cph.vhr.model.*;
 import org.cph.vhr.service.*;
 import org.cph.vhr.utils.POIUtils;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author cph
@@ -32,9 +34,11 @@ public class EmpBasicController {
     DepartmentService departmentService;
 
     @GetMapping
-    public RespPageBean getEmployeesByPage(@RequestParam(defaultValue = "1") Integer page,
+    @Encrypt
+    public RespBean getEmployeesByPage(@RequestParam(defaultValue = "1") Integer page,
 										   @RequestParam(defaultValue = "10") Integer size, Employee employee, Date[] beginDateScope) {
-        return employeeService.getEmployeesByPage(page, size, employee, beginDateScope);
+        Map employeesByPage = employeeService.getEmployeesByPage(page, size, employee, beginDateScope);
+        return RespBean.build().setStatus(200).setObj(employeesByPage);
     }
 
     @PostMapping
@@ -116,7 +120,7 @@ public class EmpBasicController {
     @GetMapping("/export")
     public ResponseEntity<byte[]> exportData() {
         // 先查询所有员工数据，再生成excel，返回指定对象
-        List<Employee> list = (List<Employee>) employeeService.getEmployeesByPage(null, null, new Employee(), null).getData();
+        List<Employee> list = (List<Employee>) employeeService.getEmployeesByPage(null, null, new Employee(), null).get("data");
         return POIUtils.employee2Excel(list);
     }
 

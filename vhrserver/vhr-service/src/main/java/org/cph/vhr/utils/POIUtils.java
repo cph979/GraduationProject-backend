@@ -249,7 +249,7 @@ public class POIUtils {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         HttpHeaders headers = new HttpHeaders();
         try {
-            // 设置响应头
+            // 设置消息头
             // 通知浏览器以attachment（下载方式）打开文件
             headers.setContentDispositionFormData("attachment", new String("员工表.xls".getBytes(StandardCharsets.UTF_8), "ISO-8859-1"));
             // 设置MediaType，即Internet Media Type（互联网媒体类型），MIME类型

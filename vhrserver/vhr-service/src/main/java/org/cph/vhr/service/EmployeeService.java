@@ -11,9 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author cph
@@ -38,15 +36,18 @@ public class EmployeeService {
         return employeeMapper.updateEmployeeWithSalary(eid, sid);
     }
 
-    public RespPageBean getEmployeesByPage(Integer page, Integer size, Employee employee, Date[] beginDateScope) {
+    public Map getEmployeesByPage(Integer page, Integer size, Employee employee, Date[] beginDateScope) {
         if (page != null && size != null) {
             page = (page - 1) * size;
         }
         List<Employee> employeeList = employeeMapper.getEmployeesByPage(page, size, employee, beginDateScope);
         Long countEmployee = employeeMapper.getAllCount(employee, beginDateScope);
-        RespPageBean respPageBean = new RespPageBean();
-        respPageBean.setData(employeeList);
-        respPageBean.setTotal(countEmployee);
+        HashMap<String, Object> respPageBean = new HashMap<>();
+        respPageBean.put("total", countEmployee);
+        respPageBean.put("data", employeeList);
+//        RespPageBean respPageBean = new RespPageBean();
+//        respPageBean.setData(employeeList);
+//        respPageBean.setTotal(countEmployee);
         return respPageBean;
     }
 

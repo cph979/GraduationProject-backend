@@ -41,7 +41,7 @@ public class MailReceiver {
 	StringRedisTemplate stringRedisTemplate;
 
 	/**
-	 * 存在重复消费的情况，收到多次仍然只发送一封邮件
+	 * 存在重复消费的情况，收到多次仍然只收一封邮件
 	 *
 	 * @param message 封装员工对象和消息id
 	 * @param channel 改为手动确定消息的接收，默认自动确认消息
