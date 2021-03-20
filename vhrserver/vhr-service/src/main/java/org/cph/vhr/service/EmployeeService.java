@@ -22,17 +22,41 @@ public class EmployeeService {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeService.class);
 
     @Resource
-    EmployeeMapper employeeMapper;
+    private EmployeeMapper employeeMapper;
     @Resource
-    RabbitTemplate rabbitTemplate;
+    private RabbitTemplate rabbitTemplate;
     @Resource
-    MailSendLogService mailSendLogService;
+    private MailSendLogService mailSendLogService;
+    @Resource
+    private EmployeeRemoveService employeeRemoveService;
+    @Resource
+    private SalaryTableService salaryTableService;
+    @Resource
+    private SalaryService salaryService;
 
-    SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
-    SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
-    DecimalFormat decimalFormat = new DecimalFormat("#.00");
+    private SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+    private SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+    private DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
     public Integer updateEmployeeWithSalary(Integer eid, Integer sid) {
+        // 查询sid的工资账套
+        Salary oldSalary = salaryService.getSalary(sid);
+        // 更新员工账套时新增薪资数据至工资表
+        Integer basicSalary = oldSalary.getBasicSalary();
+        Integer bonus = oldSalary.getBonus();
+        Integer lunchSalary = oldSalary.getLunchSalary();
+        Integer trafficSalary = oldSalary.getTrafficSalary();
+        Integer pensionBase = oldSalary.getPensionBase();
+        Float pensionPer = oldSalary.getPensionPer();
+        Integer medicalBase = oldSalary.getMedicalBase();
+        Float medicalPer = oldSalary.getMedicalPer();
+        Integer accumulationFundBase = oldSalary.getAccumulationFundBase();
+        Float accumulationFundPer = oldSalary.getAccumulationFundPer();
+        Float allSalary = calculateSalary(basicSalary, bonus, lunchSalary, trafficSalary, pensionBase, pensionPer, medicalBase, medicalPer, accumulationFundBase, accumulationFundPer);
+
+        SalaryTable salaryTable = new SalaryTable(null, eid, sid, basicSalary, bonus, lunchSalary, trafficSalary, allSalary);
+        salaryTableService.saveSalaryTable(salaryTable);
+
         return employeeMapper.updateEmployeeWithSalary(eid, sid);
     }
 
@@ -79,6 +103,13 @@ public class EmployeeService {
     }
 
     public Integer updateEmployee(Employee employee) {
+        Integer id = employee.getId();
+        Employee oldEmp = employeeMapper.selectByPrimaryKey(id);
+        // 部门职位有变更的时候新增调动表记录
+        if (!oldEmp.equals(employee)) {
+            employeeRemoveService.saveEmpRemove(new EmployeeRemove(null, employee.getId(), employee.getDepartmentId(),
+                    employee.getJobLevelId(), new Date(), "部门职称变动"));
+        }
         return employeeMapper.updateByPrimaryKeySelective(employee);
     }
 
@@ -124,5 +155,17 @@ public class EmployeeService {
 
     public Employee getEmployeesById(Integer empId) {
         return employeeMapper.getEmployeesById(empId);
+    }
+
+    /**
+     * 计算工资
+     *
+     * @param
+     * @return
+     */
+    public Float calculateSalary(Integer basicSalary, Integer bonus, Integer lunchSalary, Integer trafficSalary,
+                                   Integer pensionBase, Float pensionPer, Integer medicalBase, Float medicalPer, Integer accumulationFundBase,
+                                   Float accumulationFundPer) {
+        return ((basicSalary + bonus + lunchSalary + trafficSalary) - (pensionBase * pensionPer + medicalBase * medicalPer + accumulationFundBase * accumulationFundPer));
     }
 }

@@ -1,5 +1,6 @@
 package org.cph.vhr.mapper;
 
+import org.apache.ibatis.annotations.Select;
 import org.cph.vhr.model.Salary;
 
 import java.util.List;
@@ -18,4 +19,7 @@ public interface SalaryMapper {
     int updateByPrimaryKey(Salary record);
 
 	List<Salary> listSalaries();
+
+	@Select("select * from salary where id = #{sid}")
+	Salary getSalary(Integer sid);
 }

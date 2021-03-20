@@ -12,6 +12,47 @@
   <sql id="Base_Column_List" >
     id, eid, afterDepId, afterJobId, removeDate, reason
   </sql>
+
+  <resultMap id="empInfo" type="org.cph.vhr.model.EmployeeRemove" extends="BaseResultMap">
+    <association property="employee" javaType="org.cph.vhr.model.Employee">
+      <result column="workID" property="workID"/>
+      <result column="name" property="name"/>
+    </association>
+    <association property="department" javaType="org.cph.vhr.model.Department">
+      <id column="did" property="id"/>
+      <result column="dname" property="name"/>
+    </association>
+    <association property="jobLevel" javaType="org.cph.vhr.model.JobLevel">
+      <id column="jid" property="id"/>
+      <result column="jname" property="name"/>
+    </association>
+  </resultMap>
+
+  <!--保存调动表记录，不存在新增，存在更新-->
+  <insert id="insertEmpRemove">
+    replace into employeeremove(eid, afterDepId, afterJobId, removeDate, reason)
+    values(#{employeeRemove.eid}, #{employeeRemove.afterDepId},
+    #{employeeRemove.afterJobId}, #{employeeRemove.removeDate}, #{employeeRemove.reason})
+  </insert>
+
+  <update id="updateEmployeeRemove">
+    update employeeremove set reason = #{employeeRemove.reason} where id = #{employeeRemove.id}
+  </update>
+
+  <select id="listEmployeeRemoves" resultMap="empInfo">
+    SELECT
+      er.*,
+      e.workID,
+      e.`name`,
+      d.`name` AS dname,
+      j.`name` AS jname
+    FROM
+      employeeremove er
+      INNER JOIN employee e ON er.eid = e.id
+      INNER JOIN department d ON er.afterDepId = d.id
+      INNER JOIN joblevel j ON er.afterJobId = j.id
+  </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
@@ -24,8 +65,7 @@
   </delete>
   <insert id="insert" parameterType="org.cph.vhr.model.EmployeeRemove" >
     insert into employeeremove (id, eid, afterDepId, 
-      afterJobId, removeDate, reason, 
-      remark)
+      afterJobId, removeDate, reason)
     values (#{id,jdbcType=INTEGER}, #{eid,jdbcType=INTEGER}, #{afterDepId,jdbcType=INTEGER}, 
       #{afterJobId,jdbcType=INTEGER}, #{removeDate,jdbcType=DATE}, #{reason,jdbcType=VARCHAR})
   </insert>

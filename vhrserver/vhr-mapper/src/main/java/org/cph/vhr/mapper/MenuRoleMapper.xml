@@ -59,7 +59,7 @@
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="org.cph.vhr.model.MenuRole" >
     update menu_role
-    <set >
+    <set>
       <if test="mid != null" >
         mid = #{mid,jdbcType=INTEGER},
       </if>

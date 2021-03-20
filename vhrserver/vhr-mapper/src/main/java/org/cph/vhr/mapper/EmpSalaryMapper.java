@@ -1,5 +1,6 @@
 package org.cph.vhr.mapper;
 
+import org.apache.ibatis.annotations.Delete;
 import org.cph.vhr.model.EmpSalary;
 
 public interface EmpSalaryMapper {
@@ -14,4 +15,7 @@ public interface EmpSalaryMapper {
     int updateByPrimaryKeySelective(EmpSalary record);
 
     int updateByPrimaryKey(EmpSalary record);
+
+    @Delete("delete from empsalary where eid = #{eid}")
+	void deleteEmpSalaryByEid(Integer eid);
 }

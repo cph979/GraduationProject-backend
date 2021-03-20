@@ -43,7 +43,7 @@
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="org.cph.vhr.model.Nation" >
     update nation
-    <set >
+    <set>
       <if test="name != null" >
         name = #{name,jdbcType=VARCHAR},
       </if>

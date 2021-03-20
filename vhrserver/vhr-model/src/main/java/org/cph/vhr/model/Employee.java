@@ -387,4 +387,23 @@ public class Employee implements Serializable {
     public void setSalary(Salary salary) {
         this.salary = salary;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Employee employee = (Employee) o;
+
+        if (departmentId != null ? !departmentId.equals(employee.departmentId) : employee.departmentId != null)
+            return false;
+        return jobLevelId != null ? jobLevelId.equals(employee.jobLevelId) : employee.jobLevelId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = departmentId != null ? departmentId.hashCode() : 0;
+        result = 31 * result + (jobLevelId != null ? jobLevelId.hashCode() : 0);
+        return result;
+    }
 }

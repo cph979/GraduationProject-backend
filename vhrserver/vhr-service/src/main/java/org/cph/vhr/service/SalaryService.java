@@ -33,4 +33,8 @@ public class SalaryService {
 	public Integer updateSalary(Salary salary) {
 		return salaryMapper.updateByPrimaryKeySelective(salary);
 	}
+
+	public Salary getSalary(Integer sid) {
+		return salaryMapper.getSalary(sid);
+	}
 }
