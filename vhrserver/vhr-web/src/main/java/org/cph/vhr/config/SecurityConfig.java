@@ -48,7 +48,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/css/**", "/js/**", "/index.html", "/img/**", "/fonts/**", "/favicon.ico", "/verify");
+        web.ignoring().antMatchers("/css/**",
+                "/js/**",
+                "/index.html",
+                "/img/**",
+                "/fonts/**",
+                "/favicon.ico",
+                "/verify",
+                "/swagger*//**",
+                "/v2/api-docs",
+                "/webjars*//**");
     }
 
     // 配置登录表单、成功回调、失败回调、注销

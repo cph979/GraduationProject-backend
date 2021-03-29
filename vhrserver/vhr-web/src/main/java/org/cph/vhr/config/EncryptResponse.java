@@ -22,7 +22,7 @@ import javax.annotation.Resource;
  * 响应给前端前加密
  *
  * @author cph
- * @date 2021/03/13
+ * @date 2021/02/13
  */
 @EnableConfigurationProperties(EncryptProperties.class)
 @ControllerAdvice

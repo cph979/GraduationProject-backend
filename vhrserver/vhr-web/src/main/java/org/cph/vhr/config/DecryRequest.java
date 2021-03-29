@@ -22,7 +22,7 @@ import java.lang.reflect.Type;
  * 接收前端参数之前解密
  *
  * @author cph
- * @date 2021/03/13
+ * @date 2021/02/13
  */
 @EnableConfigurationProperties(EncryptProperties.class)
 @ControllerAdvice

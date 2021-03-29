@@ -1,9 +1,15 @@
 package org.cph.vhr.web.emp;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Delete;
+import org.cph.vhr.annotations.Decrypt;
 import org.cph.vhr.annotations.Encrypt;
 import org.cph.vhr.model.*;
 import org.cph.vhr.service.*;
 import org.cph.vhr.utils.POIUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +23,7 @@ import java.util.Map;
  * @author cph
  * @date 2020/12/13
  */
+@Api(tags = "员工数据接口")
 @RestController
 @RequestMapping("/employee/basic")
 public class EmpBasicController {
@@ -33,15 +40,20 @@ public class EmpBasicController {
     @Resource
     DepartmentService departmentService;
 
+    private final Logger log = LoggerFactory.getLogger(EmpBasicController.class);
+
+
+    @ApiOperation(value = "获取所有用户")
     @GetMapping
-    @Encrypt
+//    @Encrypt
     public RespBean getEmployeesByPage(@RequestParam(defaultValue = "1") Integer page,
 										   @RequestParam(defaultValue = "10") Integer size, Employee employee, Date[] beginDateScope) {
         Map employeesByPage = employeeService.getEmployeesByPage(page, size, employee, beginDateScope);
-        return RespBean.build().setStatus(200).setObj(employeesByPage);
+        return RespBean.build().setStatus(200).setObj(employeesByPage).setEncryptStatus(true);
     }
 
     @PostMapping
+    @Decrypt
     public RespBean addEmployee(@RequestBody Employee employee) {
         if (employeeService.addEmployee(employee) == 1) {
             return RespBean.ok("添加成功");

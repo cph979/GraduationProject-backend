@@ -1,5 +1,6 @@
 package org.cph.vhr.web.personnel;
 
+import org.cph.vhr.annotations.Encrypt;
 import org.cph.vhr.model.EmployeeEC;
 import org.cph.vhr.model.RespBean;
 import org.cph.vhr.service.EmployeeECService;
@@ -20,8 +21,10 @@ public class EmployeeECController {
     EmployeeECService employeeECService;
 
     @GetMapping
-    public List<EmployeeEC> getAllEmployeeECs() {
-        return employeeECService.getAllEmployeeECs();
+    @Encrypt
+    public RespBean getAllEmployeeECs() {
+        List<EmployeeEC> employeeECs = employeeECService.getAllEmployeeECs();
+        return RespBean.build().setStatus(200).setObj(employeeECs).setEncryptStatus(true);
     }
 
     @PostMapping

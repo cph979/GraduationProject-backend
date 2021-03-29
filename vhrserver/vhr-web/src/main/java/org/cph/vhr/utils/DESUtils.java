@@ -9,7 +9,7 @@ import java.util.Base64;
  * @date 2021/03/13
  */
 public class DESUtils {
-	private static final String AES_ALGORITHM = "DES";
+	private static final String DES_ALGORITHM = "DES";
 
 	/**
 	 * 获取cipher
@@ -21,7 +21,7 @@ public class DESUtils {
 	 */
 	private static Cipher getCipher(byte[] key, int model) throws Exception {
 		SecretKeySpec secretKeySpec = new SecretKeySpec(key, "DES");
-		Cipher cipher = Cipher.getInstance(AES_ALGORITHM);
+		Cipher cipher = Cipher.getInstance(DES_ALGORITHM);
 		cipher.init(model, secretKeySpec);
 		return cipher;
 	}

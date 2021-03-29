@@ -5,6 +5,11 @@ public class RespBean {
     private String msg;
     private Object obj;
 
+    /**
+     *  代表obj是否被加密，默认false未加密，true加密
+     */
+    private Boolean encryptStatus;
+
     public static RespBean build() {
         return new RespBean();
     }
@@ -58,6 +63,15 @@ public class RespBean {
 
     public RespBean setObj(Object obj) {
         this.obj = obj;
+        return this;
+    }
+
+    public Boolean getEncryptStatus() {
+        return encryptStatus;
+    }
+
+    public RespBean setEncryptStatus(Boolean encryptStatus) {
+        this.encryptStatus = encryptStatus;
         return this;
     }
 }
