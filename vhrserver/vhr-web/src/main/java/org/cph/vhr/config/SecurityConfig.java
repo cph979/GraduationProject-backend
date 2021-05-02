@@ -23,13 +23,13 @@ import java.io.PrintWriter;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
-    HrService hrService;
+    private HrService hrService;
     @Resource
-    CustomUrlDecisionManager customUrlDecisionManager;
+    private CustomUrlDecisionManager customUrlDecisionManager;
     @Resource
-    CustomFilterInvocationSecurityMetadataSource customFilterInvocationSecurityMetadataSource;
+    private CustomFilterInvocationSecurityMetadataSource customFilterInvocationSecurityMetadataSource;
 //    @Resource
-//    VerificationCodeFilter verificationCodeFilter;
+//    private VerificationCodeFilter verificationCodeFilter;
 
     @Bean
     PasswordEncoder passwordEncoder() {

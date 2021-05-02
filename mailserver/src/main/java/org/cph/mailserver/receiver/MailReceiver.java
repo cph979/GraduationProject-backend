@@ -32,13 +32,13 @@ public class MailReceiver {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MailReceiver.class);
 
 	@Resource
-	JavaMailSender javaMailSender;
+	private JavaMailSender javaMailSender;
 	@Resource
-	MailProperties mailProperties;
+	private MailProperties mailProperties;
 	@Resource
-	TemplateEngine templateEngine;
+	private TemplateEngine templateEngine;
 	@Resource
-	StringRedisTemplate stringRedisTemplate;
+	private StringRedisTemplate stringRedisTemplate;
 
 	/**
 	 * 存在重复消费的情况，收到多次仍然只收一封邮件

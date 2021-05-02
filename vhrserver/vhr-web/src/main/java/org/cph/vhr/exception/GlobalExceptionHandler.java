@@ -10,17 +10,18 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
 /**
- * @author cph
- * @create 2020-12-11 15:02
  * 全局异常处理器
+ *
+ * @author cph
+ * @date 2020/12/11
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    private Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(SQLException.class)
     public RespBean sqlException(SQLException e) {
-        log.info("异常信息:" + e.toString());
+        LOG.info("异常信息:" + e.getMessage());
         if (e instanceof SQLIntegrityConstraintViolationException) {
             return RespBean.error("该数据有关联数据，操作失败");
         }

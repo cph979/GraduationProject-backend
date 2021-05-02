@@ -1,5 +1,6 @@
 package org.cph.vhr.web.personnel;
 
+import org.cph.vhr.annotations.Encrypt;
 import org.cph.vhr.model.EmployeeRemove;
 import org.cph.vhr.model.RespBean;
 import org.cph.vhr.service.EmployeeRemoveService;
@@ -26,9 +27,10 @@ public class EmployeeRemoveController {
 	 * @return
 	 */
 	@GetMapping
+	@Encrypt
 	public RespBean getEmployeeRemoves() {
 		List<EmployeeRemove> listEmployeeRemoves =  employeeRemoveService.listEmployeeRemoves();
-		return RespBean.ok(null, listEmployeeRemoves);
+		return RespBean.build().setStatus(200).setObj(listEmployeeRemoves).setEncryptStatus(true);
 	}
 
 	/**

@@ -4,6 +4,8 @@ import org.cph.vhr.config.FastDFSUtils;
 import org.cph.vhr.model.Hr;
 import org.cph.vhr.model.RespBean;
 import org.cph.vhr.service.HrService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,10 +24,12 @@ import java.util.Map;
 @RestController
 public class HrInfoController {
 	@Resource
-	HrService hrService;
+	private HrService hrService;
 
 	@Value("${fastDFS.nginx.host}")
-	String fastDFSNginxHost;
+	private String fastDFSNginxHost;
+
+	private static final Logger LOG = LoggerFactory.getLogger(HrInfoController.class);
 
 	/**
 	 * 获取用户信息
@@ -93,6 +97,7 @@ public class HrInfoController {
 	public RespBean uploadAvatar(MultipartFile file, Integer id, Authentication authentication) {
 		String field = FastDFSUtils.upload(file);
 		String url = fastDFSNginxHost + field;
+		LOG.info("文件保存地址>>>" + url);
 		if (hrService.updateAvatarUrl(url, id) == 1) {
 			Hr hr = (Hr) authentication.getPrincipal();
 			hr.setUserface(url);

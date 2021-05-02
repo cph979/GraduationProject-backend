@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class MenuService {
     @Resource
-    MenuMapper menuMapper;
+    private MenuMapper menuMapper;
 
     public List<Menu> getAllMenus() {
         return menuMapper.getAllMenus();

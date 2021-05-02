@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/salary/sob")
 public class SalaryController {
 	@Resource
-	SalaryService salaryService;
+	private SalaryService salaryService;
 
 	/**
 	 * 查询全部工资套账

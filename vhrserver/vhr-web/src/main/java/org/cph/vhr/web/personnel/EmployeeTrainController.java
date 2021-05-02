@@ -1,5 +1,7 @@
 package org.cph.vhr.web.personnel;
 
+import org.cph.vhr.annotations.Decrypt;
+import org.cph.vhr.annotations.Encrypt;
 import org.cph.vhr.model.EmployeeTrain;
 import org.cph.vhr.model.RespBean;
 import org.cph.vhr.service.EmployeeTrainService;
@@ -20,11 +22,13 @@ public class EmployeeTrainController {
     EmployeeTrainService employeeTrainService;
 
     @GetMapping
-    public List<EmployeeTrain> getAllEmployeeTrains() {
-        return employeeTrainService.getAllEmployeeTrains();
+    @Encrypt
+    public RespBean getAllEmployeeTrains() {
+        return RespBean.build().setStatus(200).setObj(employeeTrainService.getAllEmployeeTrains()).setEncryptStatus(true);
     }
 
     @PostMapping
+    @Decrypt
     public RespBean addEmployeeTrain(@RequestBody EmployeeTrain employeeTrain) {
         if (employeeTrainService.getEmployeeTrainByEidAndTrainContent(employeeTrain.getEid(), employeeTrain.getTrainContent()) != null) {
             return RespBean.error("已存在该员工相同培训内容的记录");

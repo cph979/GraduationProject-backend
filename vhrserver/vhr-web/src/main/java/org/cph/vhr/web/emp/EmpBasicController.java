@@ -42,10 +42,8 @@ public class EmpBasicController {
 
     private final Logger log = LoggerFactory.getLogger(EmpBasicController.class);
 
-
-    @ApiOperation(value = "获取所有用户")
     @GetMapping
-//    @Encrypt
+    @Encrypt
     public RespBean getEmployeesByPage(@RequestParam(defaultValue = "1") Integer page,
 										   @RequestParam(defaultValue = "10") Integer size, Employee employee, Date[] beginDateScope) {
         Map employeesByPage = employeeService.getEmployeesByPage(page, size, employee, beginDateScope);

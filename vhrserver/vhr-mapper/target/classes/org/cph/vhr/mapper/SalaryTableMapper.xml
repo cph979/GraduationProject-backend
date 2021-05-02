@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cph.vhr.mapper.SalaryTableMapper">
+    <resultMap id="BaseResultMap" type="org.cph.vhr.model.SalaryTable">
+        <id column="id" property="id"/>
+        <result column="eid" property="eid"/>
+        <result column="sid" property="sid"/>
+        <result column="basicSalary" property="basicSalary"/>
+        <result column="bonus" property="bonus"/>
+        <result column="lunchSalary" property="lunchSalary"/>
+        <result column="trafficSalary" property="trafficSalary"/>
+        <result column="allSalary" property="allSalary"/>
+    </resultMap>
+
+    <resultMap id="AllData" type="org.cph.vhr.model.SalaryTable" extends="BaseResultMap">
+        <association property="employee" javaType="org.cph.vhr.model.Employee">
+            <result column="workID" property="workID"/>
+            <result column="name" property="name"/>
+        </association>
+        <association property="salary" javaType="org.cph.vhr.model.Salary">
+            <result column="saname" property="name"/>
+        </association>
+    </resultMap>
+
+    <insert id="saveSalaryTable">
+        replace into salarytable(eid, sid, basicSalary, bonus, lunchSalary, trafficSalary, allSalary)
+        values (#{salaryTable.eid}, #{salaryTable.sid}, #{salaryTable.basicSalary}, #{salaryTable.bonus},
+        #{salaryTable.lunchSalary}, #{salaryTable.trafficSalary}, #{salaryTable.allSalary})
+    </insert>
+
+    <select id="listSalaryTables" resultMap="AllData">
+    SELECT
+        s.*,
+        e.workID,
+        e.NAME,
+        sa.`name` as saname
+    FROM
+        `salarytable` s
+        INNER JOIN employee e ON s.eid = e.id
+        INNER JOIN salary sa on s.sid = sa.id
+    </select>
+
+    <!--更新薪资表-->
+    <update id="updateSalaryTable">
+        update salarytable
+        <set>
+            <if test="salaryTable.basicSalary != null">
+                basicSalary = #{salaryTable.basicSalary},
+            </if>
+            <if test="salaryTable.bonus != null">
+                bonus = #{salaryTable.bonus},
+            </if>
+            <if test="salaryTable.lunchSalary != null">
+                lunchSalary = #{salaryTable.lunchSalary},
+            </if>
+            <if test="salaryTable.trafficSalary != null">
+                trafficSalary = #{salaryTable.trafficSalary},
+            </if>
+            <if test="salaryTable.allSalary != null">
+                allSalary = #{salaryTable.allSalary}
+            </if>
+        </set>
+        where id = #{salaryTable.id}
+    </update>
+</mapper>

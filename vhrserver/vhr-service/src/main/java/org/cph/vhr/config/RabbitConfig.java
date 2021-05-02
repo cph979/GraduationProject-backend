@@ -26,9 +26,9 @@ public class RabbitConfig {
 	private static final Logger LOGGER = LoggerFactory.getLogger(RabbitConfig.class);
 
 	@Resource
-	CachingConnectionFactory cachingConnectionFactory;
+	private CachingConnectionFactory cachingConnectionFactory;
 	@Resource
-	MailSendLogService mailSendLogService;
+	private MailSendLogService mailSendLogService;
 
 	/**
 	 * 当消息从这里发送到rabbitMQ上，如果这条消息被成功收到
